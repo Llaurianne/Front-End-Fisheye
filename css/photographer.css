@@ -1,11 +1,49 @@
-#contact_modal {
+#contact_modal, #lightbox {
     display: none;
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    background-color: rgba(255, 255, 255, 0.8);
 }
 
 .photograph-header {
     background-color: #FAFAFA;
     height: 300px;
     margin: 0 100px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.fixedLabel {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    position: sticky;
+    width: 300px;
+    height: 50px;
+    background-color: #DB8876;
+}
+
+.photograph-medias, .sort {
+    margin: 0 100px;
+}
+
+.photograph-medias {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-auto-rows: 350px;
+    gap: 70px;
+    margin-top: 100px;
+}
+
+.photograph-medias img {
+    width: 100%;
+    height: 300px;
+    border-radius: 5px;
+    object-fit: cover;
+    object-position: 50% 30%;
 }
 
 .contact_button {
@@ -19,6 +57,13 @@
     background-color: #901C1C;
     border-radius: 5px;
     cursor: pointer;
+}
+
+.fixedLabel {
+    position: fixed;
+    bottom: 0;
+    right: 20px;
+    border-radius: 5px 5px 0 0;
 }
 
 .modal {
@@ -73,4 +118,46 @@ form input {
     height: 68px;
     border: none;
     border-radius: 5px;
+}
+#lightbox span {
+    color: #901C1C;
+    position: fixed;
+    transition: 300ms;
+}
+
+#lightbox span:hover {
+    cursor: pointer;
+}
+
+#lightbox .close-button {
+    font-size: 42px;
+    right: 0;
+    margin-top: 5vh;
+    margin-right: 23px;
+    z-index: 1;
+}
+
+#lightbox .nav-button {
+    font-size: 48px;
+    line-height: 80vh;
+    margin-top: 10vh;
+}
+
+#lightbox .prev {
+    left: 0;
+    margin-left: 20px;
+}
+
+#lightbox .next {
+    right: 0;
+    margin-right: 20px;
+}
+
+#lightbox-image {
+    position: fixed;
+    max-height: 90vh;
+    max-width: 80vw;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 }
