@@ -1,6 +1,5 @@
-function photographerFactory(data) {
+function photographerFactory(data, medias) {
     const { name, id, city, country, tagline, price, portrait } = data;
-
     const picture = `assets/photographers/${portrait}`;
 
     // Homepage
@@ -56,17 +55,30 @@ function photographerFactory(data) {
         const div = document.createElement('div');
         div.className = 'fixedLabel';
         const p1 = document.createElement('p');
-        p1.textContent = `999999 `;
+        p1.setAttribute('id', 'totalNbOfLikes');
+        p1.textContent = totalNbOfLikes();
         const icon = document.createElement( 'span' );
         icon.className = 'material-symbols-outlined';
         icon.textContent = 'favorite';
         const p2 = document.createElement('p');
-        p1.appendChild(icon);
         p2.textContent = `${price}€ / jour`;
         div.appendChild(p1);
+        div.appendChild(icon);
         div.appendChild(p2);
         return div;
     }
 
-    return { name, city, picture, getUserCardDOM, getUserHeaderDOM, getUserLabelDOM }
+    // Total number of likes
+    function totalNbOfLikes() {
+        let likes = 0;
+        for (let article of mediaDOMArray) {
+            likes += parseFloat(article.querySelector('.nbOfLikes').textContent);
+        }
+        /*for (let media of medias) {
+            likes += media.likes;
+        };*/
+        return likes;
+    }
+
+    return { name, city, picture, totalNbOfLikes, getUserCardDOM, getUserHeaderDOM, getUserLabelDOM }
 }

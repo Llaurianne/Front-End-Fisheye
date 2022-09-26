@@ -1,54 +1,72 @@
 // DOM elements
 const lightbox = document.getElementById("lightbox");
-const lightboxImage = document.getElementById("lightbox-image");
 const prevMedia = document.querySelector(".prev");
 const nextMedia = document.querySelector(".next");
-let mediasDOMArray
+let lightboxImage
 
 // Display lightbox
 function displayLightbox() {
     let index
-    mediasDOMArray = Array.from(document.querySelectorAll(".photograph-medias img, .photograph-medias video"));
-    mediasDOMArray.forEach(media => {
+    for (let article of mediaDOMArray) {
+        let media = article.querySelector('img, video');
         media.addEventListener('click', function(){
+            createMediaDOM(media)
             lightbox.style.display = "block";
             lightboxImage.src = media.src;
-            index = mediasDOMArray.findIndex(elt => elt.src === lightboxImage.src)
+            index = mediaDOMArray.findIndex(elt => elt.querySelector('img, video').src === lightboxImage.src)
         })
-    })
+    }
     nextMedia.addEventListener('click', () => {index = goToNext(index)});
     prevMedia.addEventListener('click', () => {index = goToPrev(index)});
     document.addEventListener('keyup', (evt) => {
-        console.log(evt.key)
         if (evt.key === 'ArrowRight' ) {
             index = goToNext(index)
+        } else if (evt.key === 'ArrowLeft' ) {
+            index = goToPrev(index)
+        } else if (evt.key === 'Escape') {
+            closeLightbox()
         }
     });
-    document.addEventListener('keyup', escapeLightbox);
+}
+
+function createMediaDOM(media) {
+    let newNode;
+    if (media.nodeName == 'IMG') {
+        newNode = document.createElement('img');
+        newNode.setAttribute('id', 'lightbox-image');
+        lightboxImage = lightbox.appendChild(newNode);
+    } else if (media.nodeName == 'VIDEO'){
+        newNode = document.createElement('video');
+        lightboxImage = document.createElement('source');
+        newNode.setAttribute('controls', '');
+        newNode.setAttribute('id', 'lightbox-image');
+        newNode.appendChild(source);
+        lightbox.appendChild(newNode);
+    }
 }
 
 function goToNext(index) {
-    if (index === mediasDOMArray.length - 1) { index = 0 }
+    document.getElementById('lightbox-image').remove()
+    if (index === mediaDOMArray.length - 1) { index = 0 }
     else { index++ }
-    lightboxImage.setAttribute('src', mediasDOMArray[index].src)
+    let media = mediaDOMArray[index].querySelector('img, video')
+    createMediaDOM(media)
+    lightboxImage.setAttribute('src', media.src)
     return index
 }
 
 function goToPrev(index) {
-    if (index === 0) { index = mediasDOMArray.length - 1 }
+    document.getElementById('lightbox-image').remove()
+    if (index === 0) { index = mediaDOMArray.length - 1 }
     else { index-- }
-    lightboxImage.setAttribute('src', mediasDOMArray[index].src)
+    let media = mediaDOMArray[index].querySelector('img, video')
+    createMediaDOM(media)
+    lightboxImage.setAttribute('src', media.src)
     return index
 }
 
 // Close lightbox modal
 function closeLightbox() {
     lightbox.style.display = "none";
-    document.removeEventListener('keyup', escapeLightbox)
-}
-
-function escapeLightbox(evt) {
-    if (evt.key === 'Escape') {
-        closeLightbox()
-    }
+    //document.removeEventListener('keyup', closeLightbox)
 }

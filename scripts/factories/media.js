@@ -13,7 +13,9 @@ function mediaFactory(media, firstname) {
         text.textContent = title;
         const counter = document.createElement( 'p' );
         counter.textContent = likes;
+        counter.className = 'nbOfLikes';
         const icon = document.createElement( 'span' );
+        icon.addEventListener('click', (evt) => updateLikes(evt))
         icon.className = 'material-symbols-outlined';
         icon.textContent = 'favorite';
         article.appendChild(mediaTag);
@@ -26,7 +28,6 @@ function mediaFactory(media, firstname) {
     // Create DOM elements for videos
     function getVideoDOM() {
         mediaTag = document.createElement( 'video' );
-        mediaTag.setAttribute('width', 300);
         mediaTag.setAttribute('controls', '');
         source = document.createElement( 'source');
         source.setAttribute('src', videoPath);
@@ -34,13 +35,28 @@ function mediaFactory(media, firstname) {
         return getMediaDOM()
     }
 
-
     // Create DOM elements for images
     function getImageDOM() {
         mediaTag = document.createElement( 'img' );
         mediaTag.setAttribute("src", picturePath)
         mediaTag.setAttribute("alt", "")
         return getMediaDOM()
+    }
+
+    // Update this media's number of likes and the total number
+    function updateLikes(evt) {
+        let nbOfLikes = evt.currentTarget.parentNode.querySelector('.nbOfLikes');
+        let totalLikes = document.getElementById('totalNbOfLikes')
+        let mediaClassList = evt.currentTarget.classList
+        if (!evt.currentTarget.classList.contains('liked')) {
+            nbOfLikes.textContent = parseFloat(nbOfLikes.textContent) + 1;
+            mediaClassList.add('liked');
+            totalLikes.textContent = parseFloat(totalLikes.textContent) + 1;
+        } else {
+            nbOfLikes.textContent = parseFloat(nbOfLikes.textContent) - 1;
+            mediaClassList.remove('liked');
+            totalLikes.textContent = parseFloat(totalLikes.textContent) - 1;
+        }
     }
 
     return { getVideoDOM, getImageDOM }
