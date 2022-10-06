@@ -8,11 +8,38 @@
     height: 300px;
     margin: 0 100px;
     display: flex;
-    justify-content: space-around;
+    justify-content: space-between;
+    padding: 50px;
     align-items: center;
 }
 
-.contact_button, ul {
+.photograph-header h1 {
+    font-size: 64px;
+    color: #D3573C;
+    margin: 0;
+}
+
+.photograph-header p {
+    font-size: 18px;
+    color: #525252;
+}
+
+.photograph-header p:first-of-type {
+    font-size: 24px;
+    color: #901C1C;
+    margin-bottom: 19px;
+}
+
+.photograph-header img {
+    margin: 0;
+}
+
+.contact-button:hover, .contact-button:focus {
+    background-color: #DB8876;
+    color: inherit;
+}
+
+.contact-button, .order ul, form button {
     font-size: 18px;
     font-weight: 700;
     color: white;
@@ -23,30 +50,45 @@
     background-color: #901C1C;
     border-radius: 5px;
     cursor: pointer;
+    transition: 300ms;
 }
 
-.fixedLabel {
+.fixed-label {
     display: flex;
-    justify-content: space-around;
+    justify-content: space-between;
     align-items: center;
-    position: sticky;
-    width: 300px;
-    height: 50px;
+    padding: 0 32px;
+    position: fixed;
+    width: 376px;
+    height: 68px;
     background-color: #DB8876;
+    font-size: 24px;
+    bottom: 0;
+    right: 20px;
+    border-radius: 5px 5px 0 0;
+    z-index: 1;
 }
 
-.sort {
+.fixed-label span {
+    vertical-align: top;
+    line-height: 31.5px;
+    font-variation-settings: 'FILL' 1;
+}
+
+.order {
     display: flex;
     position: relative;
+    z-index: 2;
 }
 
-.sort p {
+.order label {
     font-weight: 700;
-    font-size: 18px;
     margin: 20px 0 58px 0;
 }
 
-.sort ul {
+.order ul {
+    display: flex;
+    flex-direction: column;
     position: absolute;
     list-style: none;
     background-color: #901C1C;
@@ -59,49 +101,69 @@
     transition: height 500ms;
 }
 
-.sort .dropdown {
+.order .active {
+    order: -1;
+}
+
+.order .expanded {
     height: 170px;
     padding: 9px 10px 6px 10px;
 }
 
-.sort .dropdown li {
-    border-bottom: 1px solid white;
-    padding: 14px 0 14px 10px;
-}
-
-.sort .dropdown span {
-    transform: rotate(180deg);
-}
-
-.sort li {
+.order li {
+    appearance: none;
     line-height: 23px;
     text-align: justify;
     font-weight: 700;
     padding: 10px 0px 10px 10px;
 }
 
-.sort  li:last-of-type {
-    border-bottom: none;
+.order .expanded li {
+    border-bottom: 1px solid white;
+    padding: 15px 0 15px 10px;
 }
 
-.sort span {
-    margin-left: 10px;
+.order span {
+    position: absolute;
+    top: 19.5px;
+    right: 10px;
     font-size: 35px;
-    line-height: 23px;
     z-index: 1;
     transform: none;
     transition: transform 500ms;
 }
 
+.order .expanded span {
+    transform: rotate(180deg);
+}
+
 .photograph-medias {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    grid-auto-rows: 350px;
-    gap: 70px;
+    grid-auto-rows: 300px;
+    column-gap: 70px;
+    row-gap: 80px;
 }
 
-.photograph-medias, .sort {
+.photograph-medias, .order {
     margin: 0 100px;
+}
+
+.photograph-medias article {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.photograph-medias p {
+    font-size: 24px;
+    margin-top: 10px;
+    color: #901C1C;
+    flex: 1;
+    text-overflow: ellipsis;
+}
+
+.photograph-medias .nbOfLikes {
+    flex: inherit;
 }
 
 .photograph-medias img, .photograph-medias video {
@@ -111,29 +173,27 @@
     border-radius: 5px;
     object-fit: cover;
     object-position: 50% 30%;
+    background-color: #C4C4C4;
+}
+
+.photograph-medias img:hover, .photograph-medias video:hover {
+    cursor: pointer;
 }
 
 .photograph-medias .material-symbols-outlined {
-    color: #8F8F8F;
+    color: #901C1C;
     transition: 300ms;
+    line-height: 31.5px;
+    margin-top: 10px;
 }
 
 .photograph-medias .material-symbols-outlined:hover {
     cursor: pointer;
-    color: #901C1C;
     transform: scale(1.1);
 }
 
 .photograph-medias .liked {
-    color: #901C1C;
-}
-
-.fixedLabel {
-    position: fixed;
-    bottom: 0;
-    right: 20px;
-    border-radius: 5px 5px 0 0;
-    z-index: 1;
+    font-variation-settings: 'FILL' 1;
 }
 
 .modal {
@@ -144,23 +204,29 @@
     flex-direction: column;
     align-items: center;
     justify-content: space-between;
-    padding: 35px;
-    margin: auto;
+    padding: 15px 35px 35px 35px;
+    margin: 5vh auto;
 }
 
 .modal header {
-    justify-content: space-between;
+    position: relative;
+    flex-wrap: wrap;
     width: 100%;
+    height: auto;
+    margin: 0 0 19px 0;
 }
 
 .modal header img {
     cursor: pointer;
+    position: absolute;
+    right: 0;
+    top: 25px;
 }
 
-.modal header h2 {
+.modal header h2, .modal header p {
     font-size: 64px;
-    font-weight: normal;
-    text-align: center;
+    color: inherit;
+    width: 100%;
 }
 
 form {
@@ -170,33 +236,58 @@ form {
     align-items: flex-start;
 }
 
-form label {
-    color: #312E2E;
-    font-size: 36px;
-}
-
 form div {
     display: flex;
     flex-direction: column;
     width: 100%;
     align-items: self-start;
-    margin-bottom: 26px;
 }
 
-form input {
+form label {
+    color: #312E2E;
+    font-size: 36px;
+}
+
+form div:last-of-type label {
+    margin: 10px 0 5px;
+}
+
+form input, form textarea {
+    padding: 0 20px;
+    font-size: 24px;
     width: 100%;
     height: 68px;
     border: none;
     border-radius: 5px;
 }
 
-#contact_modal, #lightbox {
+form textarea {
+    line-height: 30px;
+    padding: 20px;
+    font-family: "DM Sans", sans-serif;
+}
+
+form button {
+    margin-top: 28px;
+}
+
+form .error {
+    font-size: 20px;
+    color: #551111;
+}
+
+#message {
+    height: 170px;
+}
+
+#contact-modal, #lightbox {
     display: none;
     position: fixed;
     width: 100%;
     height: 100%;
     top: 0;
     background-color: rgba(255, 255, 255, 0.8);
+    z-index: 2;
 }
 
 #lightbox span {
@@ -207,6 +298,21 @@ form input {
 
 #lightbox span:hover {
     cursor: pointer;
+}
+
+#lightbox div {
+    position: fixed;
+    max-height: 90vh;
+    max-width: 80vw;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+#lightbox p {
+    margin-top: 12px;
+    color: #901C1C;
+    font-size: 24px;
 }
 
 #lightbox .close-button {
@@ -234,10 +340,6 @@ form input {
 }
 
 #lightbox-image {
-    position: fixed;
-    max-height: 90vh;
+    max-height: 86vh;
     max-width: 80vw;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
 }

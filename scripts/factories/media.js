@@ -1,12 +1,12 @@
 function mediaFactory(media, firstname) {
-    const { id, photographerId, title, image, video, likes, date, price } = media;
+    const { title, image, video, likes } = media;
 
     const picturePath = `assets/images/${firstname}/${image}`;
     const videoPath = `assets/images/${firstname}/${video}`
 
     let mediaTag
 
-    // Create DOM common to images and videos
+    // Photographer page - Create the common DOM of images and videos
     function getMediaDOM() {
         const article = document.createElement( 'article' );
         const text = document.createElement( 'p' );
@@ -14,10 +14,12 @@ function mediaFactory(media, firstname) {
         const counter = document.createElement( 'p' );
         counter.textContent = likes;
         counter.className = 'nbOfLikes';
+        counter.setAttribute('aria-label', 'Number of likes');
         const icon = document.createElement( 'span' );
         icon.addEventListener('click', (evt) => updateLikes(evt))
         icon.className = 'material-symbols-outlined';
         icon.textContent = 'favorite';
+        icon.setAttribute('aria-label', 'Likes');
         article.appendChild(mediaTag);
         article.appendChild(text);
         article.appendChild(counter);
@@ -25,38 +27,48 @@ function mediaFactory(media, firstname) {
         return (article);
     }
 
-    // Create DOM elements for videos
+    // Photographer page - Create the videos specifics DOM elements
     function getVideoDOM() {
         mediaTag = document.createElement( 'video' );
         mediaTag.setAttribute('controls', '');
         source = document.createElement( 'source');
         source.setAttribute('src', videoPath);
+        text = document.createElement('p');
+        text.innerText = `Votre navigateur ne supporte pas ce type de vidéos. Voici un lien de téléchargement de la vidéo nommée "${title}": `;
+        link = document.createElement('a');
+        link.setAttribute('href', videoPath)
+        text.appendChild(link);
+        source.appendChild(text)
         mediaTag.appendChild(source)
         return getMediaDOM()
     }
 
-    // Create DOM elements for images
+    // Photographer page - Create the images specifics DOM elements
     function getImageDOM() {
         mediaTag = document.createElement( 'img' );
         mediaTag.setAttribute("src", picturePath)
-        mediaTag.setAttribute("alt", "")
+        mediaTag.setAttribute("alt", title)
         return getMediaDOM()
     }
 
-    // Update this media's number of likes and the total number
+    // Photographer page - Update the media's number of likes and the total number of likes
     function updateLikes(evt) {
         let nbOfLikes = evt.currentTarget.parentNode.querySelector('.nbOfLikes');
         let totalLikes = document.getElementById('totalNbOfLikes')
         let mediaClassList = evt.currentTarget.classList
+        const icon = document.createElement( 'span' );
+        icon.className = 'material-symbols-outlined';
+        icon.textContent = 'favorite';
         if (!evt.currentTarget.classList.contains('liked')) {
             nbOfLikes.textContent = parseFloat(nbOfLikes.textContent) + 1;
             mediaClassList.add('liked');
-            totalLikes.textContent = parseFloat(totalLikes.textContent) + 1;
+            totalLikes.textContent = `${parseFloat(totalLikes.textContent) + 1} `;
         } else {
             nbOfLikes.textContent = parseFloat(nbOfLikes.textContent) - 1;
             mediaClassList.remove('liked');
-            totalLikes.textContent = parseFloat(totalLikes.textContent) - 1;
+            totalLikes.textContent = `${parseFloat(totalLikes.textContent) - 1} `;
         }
+        totalLikes.appendChild(icon)
     }
 
     return { getVideoDOM, getImageDOM }

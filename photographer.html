@@ -1,60 +1,65 @@
 <!DOCTYPE html>
-<html>
+<html lang="fr" xmlns="http://www.w3.org/1999/html">
   <head>
-    <link href="css/style.css" rel="stylesheet" type="text/css" />
     <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <link href="css/style.css" rel="stylesheet" type="text/css" />
     <link rel="icon" type="image/png" href="assets/favicon.png">
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;700&display=swap" rel="stylesheet">
     <title>Fisheye - photographe </title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
   </head>
   <body>
-    <header>
-      <a href="index.html">
-        <img src="assets/images/logo.png" alt="Fisheye Home page" class="logo" />
+    <header id="main-header">
+      <a href="index.html" aria-label="Fisheye Home page">
+        <img src="assets/images/logo.png" alt="Fisheye logo" class="logo" />
       </a>
     </header>
+
     <main id="main">
-      <div class="photograph-header">
-        <button class="contact_button" onclick="displayModal()">Contactez-moi</button>
-      </div>
+      <section class="photograph-header">
+        <button class="contact-button" aria-label="Contact me">Contactez-moi</button>
+      </section>
 
-      </div>
-      <div class="sort">
-        <p>Trier par</p>
-        <ul id="filter-list">
-          <li id="popularity">Popularité <span id="dropdown-arrow" class="material-symbols-outlined">expand_more</span></li>
-          <li id="date">Date</li>
-          <li id="title">Titre</li>
+      <section class="order">
+        <label id="order-label" for="order-by">Trier par</label>
+        <ul id="order-by" role="listbox" aria-activedescendant="popularity" aria-labelledby="order-label">
+          <span id="trigger" class="material-symbols-outlined" role="button" aria-controls="order-by" aria-haspopup="listbox" aria-expanded="false">expand_more</span>
+          <li role="option" id="popularity" aria-selected="true" aria-hidden="false">Popularité</li>
+          <li role="option" id="date" aria-selected="false" aria-hidden="true">Date</li>
+          <li role="option" id="title" aria-selected="false" aria-hidden="true">Titre</li>
         </ul>
-      </div>
+      </section>
 
-      <div class="photograph-medias"></div>
+      <section class="photograph-medias"></section>
     </main>
 
-    <div id="contact_modal">
+    <div id="contact-modal" aria-role="dialog" aria-labelledby="contact-title">
       <div class="modal">
         <header>
-          <h2>Contactez-moi</h2>
-          <p id="user-name"></p>
-          <img src="assets/icons/close.svg" onclick="closeModal()" />
+          <h2 id="contact-title">Contactez-moi</h2>
+          <img src="assets/icons/close.svg" aria-role="button" aria-label="Close Contact form"/>
         </header>
-        <form onsubmit="return formSubmit()">
+        <form>
           <div>
-            <label for="first-name">Prénom</label>
+            <label for="firstname">Prénom</label>
             <input
               type="text"
-              id="first-name"
-              name="first-name"
+              id="firstname"
+              name="firstname"
               minlength="2"
+              aria-invalid="true"
+              required
             />
           </div>
           <div>
-            <label for="last-name">Nom</label>
+            <label for="lastname">Nom</label>
             <input
               type="text"
-              id="last-name"
-              name="last-name"
+              id="lastname"
+              name="lastname"
+              aria-invalid="true"
+              required
             />
           </div>
           <div>
@@ -63,32 +68,35 @@
               type="email"
               id="email"
               name="email"
+              aria-invalid="true"
+              required
             />
           </div>
           <div>
             <label for="message">Votre message</label>
-            <input
-              type="text"
+            <textarea
+              type="textarea"
               id="message"
               name="message"
-            />
+              aria-invalid="true"
+              required
+            ></textarea>
           </div>
-          <button class="contact_button" type="submit">Envoyer</button>
+          <button type="submit" aria-label="send">Envoyer</button>
         </form>
       </div>
     </div>
 
-    <div id="lightbox">
-      <span class="material-symbols-outlined close-button" onclick="closeLightbox()">close</span>
-      <span class="material-symbols-outlined nav-button prev">chevron_left</span>
-      <span class="material-symbols-outlined nav-button next">chevron_right</span>
-      <p>Titre de la photo</p>
+    <div id="lightbox" aria-label="image close-up view" aria-role="dialog">
+      <span id="lightbox-close" class="material-symbols-outlined close-button" onclick="closeLightbox()" aria-label="Close dialog" aria-role="button">close</span>
+      <span class="material-symbols-outlined nav-button prev" aria-label="Previous image" aria-role="link">chevron_left</span>
+      <span class="material-symbols-outlined nav-button next" aria-label="Next image" aria-role="link">chevron_right</span>
     </div>
 
+    <script src="/scripts/utils/contactForm.js"></script>
     <script src="/scripts/pages/photographer.js"></script>
     <script src="scripts/factories/photographer.js"></script>
     <script src="scripts/factories/media.js"></script>
-    <script src="/scripts/utils/contactForm.js"></script>
     <script src="/scripts/utils/lightbox.js"></script>
   </body>
 </html>

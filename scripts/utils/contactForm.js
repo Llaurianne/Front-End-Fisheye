@@ -1,24 +1,123 @@
-//Display form modal
-function displayModal() {
-    const modal = document.getElementById("contact_modal");
-    const userName = document.getElementById("user-name");
-    userName.textContent = photographerFactory(photographerDatas).name
-	modal.style.display = "block";
+// DOM elements
+const mainHeader = document.getElementById("main-header");
+const main = document.getElementById("main");
+const modal = document.getElementById("contact-modal");
+const contactBtn = document.querySelector(".contact-button");
+const closeBtn = document.querySelector("#contact-modal img");
+const submitBtn = document.querySelector('form button');
+const contactTitle = document.getElementById("contact-title");
+const form = document.forms[0];
+const formInputs = form.elements
+
+// Global variables
+let testArray = {
+    firstname:
+            {
+                regex: /^[A-Za-zŠŒŽœžÀ-ÿ\- ']{2,}$/,
+                errorMsg: 'Veuillez renseigner un prénom comprenant au moins 2 lettres ou caractères autorisés (espace, - , \' ).',
+                isValid: false
+            },
+    lastname:
+            {
+                regex: /^[A-Za-zŠŒŽœžÀ-ÿ\- ']{2,}$/,
+                errorMsg: 'Veuillez renseigner un nom comprenant au moins 2 lettres ou caractères autorisés (espace, - , \' ).',
+                isValid: false
+            },
+    email:
+            {
+                regex: /^([\dA-Za-z!#$%&'*\/=?^_+\-`{|}~]([.]?[\dA-Za-z!#$%&'*\/=?^_+\-`{|}~]+)+)@[\dA-Za-z]([\-]?[\dA-Za-z]+)+\.[A-Za-z]{2,}$/,
+                errorMsg: 'Veuillez renseigner une adresse email valide.',
+                isValid: false
+            },
+    message:
+            {
+                regex: /^.{25,500}$/,
+                errorMsg: 'Veuillez renseigner un message comprenant entre 25 et 500 caractères.',
+                isValid: false
+            }
 }
 
-//Close form modal
-function closeModal() {
-    const modal = document.getElementById("contact_modal");
-    modal.style.display = "none";
+// Enable the buttons to open and close the form
+function manageContactForm() {
+    contactBtn.addEventListener('click', displayModal);
+    contactBtn.addEventListener('keyup', displayModal);
+    closeBtn.addEventListener('click', closeModal);
+    closeBtn.addEventListener('keyup', closeModal);
+    submitBtn.addEventListener('click', formSubmit)
+    submitBtn.addEventListener('keyup', formSubmit)
+    displayErrorMsg()
 }
 
-//Submit form
-function formSubmit() {
-    const form = document.forms[0];
-    const formInputs = form.elements
-    for (let i=0; i < (formInputs.length - 1); i++) {
-        console.log(formInputs[i].name + " : " + formInputs[i].value)
+// Display form modal
+function displayModal(e) {
+    document.querySelectorAll('.error').forEach(msg => msg.remove())
+    if (e.type === 'click' || e.key ==='Enter') {
+        contactTitle.innerHTML = 'Contactez-moi<br>' + photographerFactory(photographerDatas).name
+        modal.setAttribute('aria-labelledby', 'contact-title')
+        modal.style.display = "block";
+        closeBtn.focus();
+        modal.setAttribute('aria-hidden', false);
+        mainHeader.setAttribute('aria-hidden', true);
+        main.setAttribute('aria-hidden', true);
+        document.addEventListener('keyup', closeModal)
     }
-    closeModal()
-    return false;
 }
+
+// Close form modal
+function closeModal(e) {
+    if (((e.type === 'click' || e.key ==='Enter') && (e.currentTarget === closeBtn || e.currentTarget === submitBtn )) || e.key === 'Escape') {
+        modal.style.display = "none";
+        modal.setAttribute('aria-hidden', true);
+        mainHeader.setAttribute('aria-hidden', false);
+        main.setAttribute('aria-hidden', false);
+        main.focus()
+        document.removeEventListener('keyup', closeModal)
+    }
+}
+
+// Display error messages and update testArray
+function displayErrorMsg() {
+    for (let input in testArray) {
+        let inputNode = document.getElementsByName(input)[0];
+        form[input].addEventListener('input', function() {
+            form[input].setAttribute('aria-invalid', true);
+            if (inputNode.nextSibling) {inputNode.nextSibling.remove()};
+            if (testArray[input].regex.test(form[input].value) === false) {
+                let text = document.createElement('p');
+                text.innerText = testArray[input].errorMsg;
+                text.className = 'error';
+                inputNode.parentNode.appendChild(text);
+                testArray[input].isValid = false;
+            } else {
+                form[input].setAttribute('aria-invalid', false);
+                testArray[input].isValid = true;
+            }
+        })
+    }
+}
+
+// Return true when all inputs are valid
+function isFormValid() {
+    if (Object.values(testArray).every(elt => elt.isValid === true)) {
+        return true
+    }
+}
+
+// Submit form
+function formSubmit(e) {
+    e.preventDefault()
+    if (submitBtn.nextSibling) {submitBtn.nextSibling.remove()}
+    if (isFormValid()) {
+        for (let i = 0; i < (formInputs.length - 1); i++) {
+            console.log(formInputs[i].name + " : " + formInputs[i].value);
+            formInputs[i].value = '';
+        }
+        closeModal(e)
+    } else {
+        let msg = document.createElement('p');
+        msg.className = 'error';
+        msg.innerText = 'Veuillez vérifier l\'ensemble des champs à remplir.'
+        submitBtn.parentNode.appendChild(msg);
+    }
+}
+

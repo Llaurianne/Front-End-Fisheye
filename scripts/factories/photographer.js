@@ -1,17 +1,20 @@
-function photographerFactory(data, medias) {
+function photographerFactory(data) {
     const { name, id, city, country, tagline, price, portrait } = data;
+
     const picture = `assets/photographers/${portrait}`;
 
-    // Homepage
+    // Homepage - Create photographer (user) card
     function getUserCardDOM() {
         const article = document.createElement( 'article' );
         const link = document.createElement('a');
         link.setAttribute('href', `./photographer.html?id=${id}`);
         const img = document.createElement( 'img' );
         img.setAttribute("src", picture);
-        img.setAttribute("alt", "");
+        img.setAttribute("alt", name);
         const h2 = document.createElement( 'h2' );
         h2.textContent = name;
+        h2.setAttribute('id', 'user-name'+id)
+        link.setAttribute('aria-labelledby', 'user-name'+id )
         const text1 = document.createElement( 'p' );
         text1.textContent = `${city}, ${country}`;
         text1.className = 'location';
@@ -30,11 +33,11 @@ function photographerFactory(data, medias) {
         return (article);
     }
 
-    // Details page header
+    // Details page - Create user header
     function getUserHeaderDOM() {
         const div = document.createElement('div');
-        const h2 = document.createElement( 'h2' );
-        h2.textContent = name;
+        const h1 = document.createElement( 'h1' );
+        h1.textContent = name;
         const text1 = document.createElement( 'p' );
         text1.textContent = `${city}, ${country}`;
         text1.className = 'location';
@@ -44,39 +47,36 @@ function photographerFactory(data, medias) {
         const img = document.createElement( 'img' );
         img.setAttribute("src", picture);
         img.setAttribute("alt", "");
-        div.appendChild(h2);
+        div.appendChild(h1);
         div.appendChild(text1);
         div.appendChild(text2);
         return { div, img };
     }
 
-    // Fixed label with likes and prices on details page
+    // Details page - Create the fixed label with total number of likes and price
     function getUserLabelDOM() {
         const div = document.createElement('div');
-        div.className = 'fixedLabel';
-        const p1 = document.createElement('p');
-        p1.setAttribute('id', 'totalNbOfLikes');
-        p1.textContent = totalNbOfLikes();
+        div.className = 'fixed-label';
         const icon = document.createElement( 'span' );
         icon.className = 'material-symbols-outlined';
         icon.textContent = 'favorite';
+        const p1 = document.createElement('p');
+        p1.setAttribute('id', 'totalNbOfLikes');
+        p1.textContent = `${totalNbOfLikes()} `;
         const p2 = document.createElement('p');
+        p1.appendChild(icon)
         p2.textContent = `${price}€ / jour`;
         div.appendChild(p1);
-        div.appendChild(icon);
         div.appendChild(p2);
         return div;
     }
 
-    // Total number of likes
+    // Details page - Calculate the total number of likes
     function totalNbOfLikes() {
         let likes = 0;
         for (let article of mediaDOMArray) {
             likes += parseFloat(article.querySelector('.nbOfLikes').textContent);
         }
-        /*for (let media of medias) {
-            likes += media.likes;
-        };*/
         return likes;
     }
 

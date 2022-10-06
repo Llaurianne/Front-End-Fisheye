@@ -7,8 +7,13 @@
     box-sizing: border-box;
 }
 
+*:focus-visible {
+    outline : 2px dashed #D3573C;
+}
+
 body {
     font-family: "DM Sans", sans-serif;
+    margin: 20px 0 100px;
 }
 
 header {
@@ -22,6 +27,11 @@ header {
 h1 {
     color: #901C1C;
     margin-right: 100px;
+}
+
+h2 {
+    font-size: 64px;
+    color: #D3573C;
 }
 
 a {
@@ -66,7 +76,6 @@ a {
     text-align: center;
     object-fit: cover;
     border-radius: 50%;
-    margin: 20px;
     box-shadow: 0 10px 10px #dedede;
 
 }
