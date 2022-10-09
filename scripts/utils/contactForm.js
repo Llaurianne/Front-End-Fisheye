@@ -7,7 +7,8 @@ const closeBtn = document.querySelector("#contact-modal img");
 const submitBtn = document.querySelector('form button');
 const contactTitle = document.getElementById("contact-title");
 const form = document.forms[0];
-const formInputs = form.elements
+const formInputs = form.elements;
+const firstname = document.getElementById("firstname");
 
 // Global variables
 let testArray = {
@@ -40,7 +41,7 @@ let testArray = {
 // Enable the buttons to open and close the form
 function manageContactForm() {
     contactBtn.addEventListener('click', displayModal);
-    contactBtn.addEventListener('keyup', displayModal);
+    contactBtn.addEventListener('keydown', displayModal);
     closeBtn.addEventListener('click', closeModal);
     closeBtn.addEventListener('keyup', closeModal);
     submitBtn.addEventListener('click', formSubmit)
@@ -50,28 +51,35 @@ function manageContactForm() {
 
 // Display form modal
 function displayModal(e) {
-    document.querySelectorAll('.error').forEach(msg => msg.remove())
+    console.log(' Display modal')
     if (e.type === 'click' || e.key ==='Enter') {
+        document.querySelectorAll('.error').forEach(msg => msg.remove())
+        document.addEventListener('keyup', keyboard);
         contactTitle.innerHTML = 'Contactez-moi<br>' + photographerFactory(photographerDatas).name
         modal.setAttribute('aria-labelledby', 'contact-title')
         modal.style.display = "block";
-        closeBtn.focus();
+        firstname.focus();
         modal.setAttribute('aria-hidden', false);
         mainHeader.setAttribute('aria-hidden', true);
         main.setAttribute('aria-hidden', true);
-        document.addEventListener('keyup', closeModal)
+    }
+}
+
+function keyboard(e) {
+    if (e.key ==='Escape') {
+        closeModal(e)
     }
 }
 
 // Close form modal
 function closeModal(e) {
-    if (((e.type === 'click' || e.key ==='Enter') && (e.currentTarget === closeBtn || e.currentTarget === submitBtn )) || e.key === 'Escape') {
+    if ( e.type === 'click' || ((e.key ==='Enter') && (e.currentTarget === closeBtn)) || e.key === 'Escape') {
         modal.style.display = "none";
         modal.setAttribute('aria-hidden', true);
         mainHeader.setAttribute('aria-hidden', false);
         main.setAttribute('aria-hidden', false);
-        main.focus()
-        document.removeEventListener('keyup', closeModal)
+        contactBtn.focus();
+        document.removeEventListener('keyup', keyboard);
     }
 }
 
@@ -106,18 +114,24 @@ function isFormValid() {
 // Submit form
 function formSubmit(e) {
     e.preventDefault()
-    if (submitBtn.nextSibling) {submitBtn.nextSibling.remove()}
-    if (isFormValid()) {
-        for (let i = 0; i < (formInputs.length - 1); i++) {
-            console.log(formInputs[i].name + " : " + formInputs[i].value);
-            formInputs[i].value = '';
+    if (e.key === 'Enter' || e.type === 'click') {
+        if (submitBtn.nextSibling) {
+            submitBtn.nextSibling.remove()
         }
-        closeModal(e)
-    } else {
-        let msg = document.createElement('p');
-        msg.className = 'error';
-        msg.innerText = 'Veuillez vérifier l\'ensemble des champs à remplir.'
-        submitBtn.parentNode.appendChild(msg);
+        if (isFormValid()) {
+            for (let i = 0; i < (formInputs.length - 1); i++) {
+                console.log(formInputs[i].name + " : " + formInputs[i].value);
+                formInputs[i].value = '';
+                testArray[formInputs[i].name].isValid = false;
+            }
+            closeModal(e)
+        } else {
+            let msg = document.createElement('p');
+            msg.className = 'error';
+            msg.innerText = 'Veuillez vérifier l\'ensemble des champs à remplir.'
+            submitBtn.parentNode.appendChild(msg);
+            firstname.focus()
+        }
     }
 }
 

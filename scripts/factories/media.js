@@ -16,7 +16,9 @@ function mediaFactory(media, firstname) {
         counter.className = 'nbOfLikes';
         counter.setAttribute('aria-label', 'Number of likes');
         const icon = document.createElement( 'span' );
-        icon.addEventListener('click', (evt) => updateLikes(evt))
+        icon.setAttribute('tabindex', '0');
+        icon.addEventListener('click', updateLikes)
+        icon.addEventListener('keyup', updateLikes)
         icon.className = 'material-symbols-outlined';
         icon.textContent = 'favorite';
         icon.setAttribute('aria-label', 'Likes');
@@ -31,6 +33,7 @@ function mediaFactory(media, firstname) {
     function getVideoDOM() {
         mediaTag = document.createElement( 'video' );
         mediaTag.setAttribute('controls', '');
+        mediaTag.setAttribute('aria-label', title);
         source = document.createElement( 'source');
         source.setAttribute('src', videoPath);
         text = document.createElement('p');
@@ -48,27 +51,30 @@ function mediaFactory(media, firstname) {
         mediaTag = document.createElement( 'img' );
         mediaTag.setAttribute("src", picturePath)
         mediaTag.setAttribute("alt", title)
+        mediaTag.setAttribute("tabindex", 0);
         return getMediaDOM()
     }
 
     // Photographer page - Update the media's number of likes and the total number of likes
-    function updateLikes(evt) {
-        let nbOfLikes = evt.currentTarget.parentNode.querySelector('.nbOfLikes');
-        let totalLikes = document.getElementById('totalNbOfLikes')
-        let mediaClassList = evt.currentTarget.classList
-        const icon = document.createElement( 'span' );
-        icon.className = 'material-symbols-outlined';
-        icon.textContent = 'favorite';
-        if (!evt.currentTarget.classList.contains('liked')) {
-            nbOfLikes.textContent = parseFloat(nbOfLikes.textContent) + 1;
-            mediaClassList.add('liked');
-            totalLikes.textContent = `${parseFloat(totalLikes.textContent) + 1} `;
-        } else {
-            nbOfLikes.textContent = parseFloat(nbOfLikes.textContent) - 1;
-            mediaClassList.remove('liked');
-            totalLikes.textContent = `${parseFloat(totalLikes.textContent) - 1} `;
+    function updateLikes(e) {
+        if (e.type === 'click' || e.key === 'Enter') {
+            let nbOfLikes = e.currentTarget.parentNode.querySelector('.nbOfLikes');
+            let totalLikes = document.getElementById('totalNbOfLikes')
+            let mediaClassList = e.currentTarget.classList
+            const icon = document.createElement('span');
+            icon.className = 'material-symbols-outlined';
+            icon.textContent = 'favorite';
+            if (!e.currentTarget.classList.contains('liked')) {
+                nbOfLikes.textContent = parseFloat(nbOfLikes.textContent) + 1;
+                mediaClassList.add('liked');
+                totalLikes.textContent = `${parseFloat(totalLikes.textContent) + 1} `;
+            } else {
+                nbOfLikes.textContent = parseFloat(nbOfLikes.textContent) - 1;
+                mediaClassList.remove('liked');
+                totalLikes.textContent = `${parseFloat(totalLikes.textContent) - 1} `;
+            }
+            totalLikes.appendChild(icon)
         }
-        totalLikes.appendChild(icon)
     }
 
     return { getVideoDOM, getImageDOM }
