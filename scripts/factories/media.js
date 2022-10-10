@@ -1,3 +1,5 @@
+// Factory pattern for medias - Return an object with DOM element article
+
 function mediaFactory(media, firstname) {
     const { title, image, video, likes } = media;
 
@@ -31,9 +33,13 @@ function mediaFactory(media, firstname) {
 
     // Photographer page - Create the videos specifics DOM elements
     function getVideoDOM() {
+        let source
+        let text
+        let link
         mediaTag = document.createElement( 'video' );
         mediaTag.setAttribute('controls', '');
         mediaTag.setAttribute('aria-label', title);
+        mediaTag.setAttribute('role', 'link');
         source = document.createElement( 'source');
         source.setAttribute('src', videoPath);
         text = document.createElement('p');
@@ -51,6 +57,7 @@ function mediaFactory(media, firstname) {
         mediaTag = document.createElement( 'img' );
         mediaTag.setAttribute("src", picturePath)
         mediaTag.setAttribute("alt", title)
+        mediaTag.setAttribute('role', 'link');
         mediaTag.setAttribute("tabindex", 0);
         return getMediaDOM()
     }

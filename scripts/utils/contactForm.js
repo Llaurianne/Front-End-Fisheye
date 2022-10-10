@@ -7,10 +7,9 @@ const closeBtn = document.querySelector("#contact-modal img");
 const submitBtn = document.querySelector('form button');
 const contactTitle = document.getElementById("contact-title");
 const form = document.forms[0];
-const formInputs = form.elements;
 const firstname = document.getElementById("firstname");
 
-// Global variables
+// Global variables - Form validation
 let testArray = {
     firstname:
             {
@@ -51,20 +50,20 @@ function manageContactForm() {
 
 // Display form modal
 function displayModal(e) {
-    console.log(' Display modal')
     if (e.type === 'click' || e.key ==='Enter') {
         document.querySelectorAll('.error').forEach(msg => msg.remove())
         document.addEventListener('keyup', keyboard);
         contactTitle.innerHTML = 'Contactez-moi<br>' + photographerFactory(photographerDatas).name
         modal.setAttribute('aria-labelledby', 'contact-title')
         modal.style.display = "block";
-        firstname.focus();
+        closeBtn.focus();
         modal.setAttribute('aria-hidden', false);
         mainHeader.setAttribute('aria-hidden', true);
         main.setAttribute('aria-hidden', true);
     }
 }
 
+ // Close the modal with escape key
 function keyboard(e) {
     if (e.key ==='Escape') {
         closeModal(e)
@@ -73,7 +72,7 @@ function keyboard(e) {
 
 // Close form modal
 function closeModal(e) {
-    if ( e.type === 'click' || ((e.key ==='Enter') && (e.currentTarget === closeBtn)) || e.key === 'Escape') {
+    if ( e.type === 'click' || e.key ==='Escape' ) {
         modal.style.display = "none";
         modal.setAttribute('aria-hidden', true);
         mainHeader.setAttribute('aria-hidden', false);
@@ -89,7 +88,7 @@ function displayErrorMsg() {
         let inputNode = document.getElementsByName(input)[0];
         form[input].addEventListener('input', function() {
             form[input].setAttribute('aria-invalid', true);
-            if (inputNode.nextSibling) {inputNode.nextSibling.remove()};
+            if (inputNode.nextSibling) {inputNode.nextSibling.remove()}
             if (testArray[input].regex.test(form[input].value) === false) {
                 let text = document.createElement('p');
                 text.innerText = testArray[input].errorMsg;
@@ -104,7 +103,7 @@ function displayErrorMsg() {
     }
 }
 
-// Return true when all inputs are valid
+// Form validation - Return true when all inputs are valid
 function isFormValid() {
     if (Object.values(testArray).every(elt => elt.isValid === true)) {
         return true
@@ -113,6 +112,7 @@ function isFormValid() {
 
 // Submit form
 function formSubmit(e) {
+    const formInputs = form.elements;
     e.preventDefault()
     if (e.key === 'Enter' || e.type === 'click') {
         if (submitBtn.nextSibling) {
@@ -134,4 +134,3 @@ function formSubmit(e) {
         }
     }
 }
-

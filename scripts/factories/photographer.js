@@ -1,3 +1,4 @@
+// Factory pattern for photographer - Return an object with DOM elements and datas
 function photographerFactory(data) {
     const { name, id, city, country, tagline, price, portrait } = data;
 

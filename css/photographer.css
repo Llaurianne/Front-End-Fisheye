@@ -1,7 +1,10 @@
+/* General styles */
 
 .material-symbols-outlined {
     vertical-align: middle;
 }
+
+/* Photographer header */
 
 .photograph-header {
     background-color: #FAFAFA;
@@ -53,6 +56,8 @@
     transition: 300ms;
 }
 
+/* Fixed label bottom right */
+
 .fixed-label {
     display: flex;
     justify-content: space-between;
@@ -75,13 +80,15 @@
     font-variation-settings: 'FILL' 1;
 }
 
+/* Dropdown filter menu */
+
 .order {
     display: flex;
     position: relative;
     z-index: 2;
 }
 
-.order label {
+#order-label {
     font-weight: 700;
     margin: 20px 0 58px 0;
 }
@@ -101,11 +108,7 @@
     transition: height 500ms;
 }
 
-.order .active {
-    order: -1;
-}
-
-.order .expanded {
+.order.expanded ul {
     height: 170px;
     padding: 9px 10px 6px 10px;
 }
@@ -118,24 +121,37 @@
     padding: 10px 0px 10px 10px;
 }
 
-.order .expanded li {
+.order.expanded li {
     border-bottom: 1px solid white;
     padding: 15px 0 15px 10px;
 }
 
-.order span {
+.order button {
     position: absolute;
-    top: 19.5px;
-    right: 10px;
-    font-size: 35px;
+    top: 9px;
+    left: 100px;
+    padding: 17px 12px 17px 122px;
     z-index: 1;
-    transform: none;
-    transition: transform 500ms;
+    background: none;
+    border: none;
 }
 
-.order .expanded span {
+.order button:hover {
+    cursor: pointer;
+}
+
+.order span {
+    transform: none;
+    transition: transform 500ms;
+    color: white;
+    font-size: 35px;
+}
+
+.order.expanded span {
     transform: rotate(180deg);
 }
+
+/* Grid of pictures and videos */
 
 .photograph-medias {
     display: grid;
@@ -195,6 +211,8 @@
 .photograph-medias .liked {
     font-variation-settings: 'FILL' 1;
 }
+
+/* Contact form modal */
 
 .modal {
     border-radius: 5px;
@@ -290,13 +308,15 @@ form .error {
     z-index: 2;
 }
 
-#lightbox span {
+/* Lightbox */
+
+#lightbox a {
     color: #901C1C;
     position: fixed;
     transition: 300ms;
 }
 
-#lightbox span:hover {
+#lightbox a:hover {
     cursor: pointer;
 }
 
@@ -315,12 +335,20 @@ form .error {
     font-size: 24px;
 }
 
-#lightbox .close-button {
+#lightbox-close {
+    position: absolute;
+    background: none;
+    border:none;
+    color: #901C1C;
     font-size: 42px;
     right: 0;
     margin-top: 5vh;
     margin-right: 23px;
     z-index: 1;
+}
+
+#lightbox-close:hover {
+    cursor: pointer;
 }
 
 #lightbox .nav-button {

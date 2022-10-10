@@ -24,9 +24,11 @@
       </div>
 
       <div class="order">
-        <label id="order-label" for="order-by">Trier par</label>
+        <p id="order-label">Trier par</p>
+        <button id="trigger"  aria-controls="order-by" aria-haspopup="listbox" aria-expanded="false" aria-label="tri menu">
+          <span class="material-symbols-outlined">expand_more</span>
+        </button>
         <ul id="order-by" role="listbox" aria-activedescendant="popularity" aria-labelledby="order-label" >
-          <span id="trigger" class="material-symbols-outlined" role="button" aria-controls="order-by" aria-haspopup="listbox" aria-expanded="false" aria-label="tri menu" tabindex="0">expand_more</span>
           <li role="option" id="popularity" aria-selected="true" aria-hidden="false">Popularité</li>
           <li role="option" id="date" aria-selected="false" aria-hidden="true">Date</li>
           <li role="option" id="title" aria-selected="false" aria-hidden="true">Titre</li>
@@ -36,7 +38,7 @@
       <div class="photograph-medias"></div>
     </main>
 
-    <div id="contact-modal" role="dialog" aria-labelledby="contact-title">
+    <div id="contact-modal" role="dialog" aria-labelledby="contact-title" aria-modal="true">
       <div class="modal">
         <header>
           <h2 id="contact-title">Contactez-moi</h2>
@@ -88,16 +90,16 @@
       </div>
     </div>
 
-    <div id="lightbox" aria-label="image close-up view" role="dialog">
-      <span id="lightbox-close" class="material-symbols-outlined close-button" aria-label="Close dialog" tabindex="0">close</span>
-      <span class="material-symbols-outlined nav-button prev" aria-label="Previous image" role="link" tabindex="0">chevron_left</span>
-      <span class="material-symbols-outlined nav-button next" aria-label="Next image" role="link" tabindex="0">chevron_right</span>
+    <div id="lightbox" aria-label="image close-up view" role="dialog" aria-modal="true">
+      <button id="lightbox-close" class="material-symbols-outlined" aria-label="Close dialog" tabindex="0">close</button>
+      <a href="" class="material-symbols-outlined nav-button prev" aria-label="Previous image" tabindex="0">chevron_left</a>
+      <a href="" class="material-symbols-outlined nav-button next" aria-label="Next image" tabindex="0">chevron_right</a>
     </div>
 
-    <script src="/scripts/utils/contactForm.js"></script>
-    <script src="/scripts/pages/photographer.js"></script>
+    <script src="scripts/utils/contactForm.js"></script>
+    <script src="scripts/pages/photographer.js"></script>
     <script src="scripts/factories/photographer.js"></script>
     <script src="scripts/factories/media.js"></script>
-    <script src="/scripts/utils/lightbox.js"></script>
+    <script src="scripts/utils/lightbox.js"></script>
   </body>
 </html>

@@ -1,11 +1,19 @@
-const photographerId = new URLSearchParams(document.location.search).get("id");
-const orderBy = document.getElementById('order-by')
-const trigger = document.getElementById('trigger')
+
+// DOM elements
+const orderContainer = document.querySelector('.order');
+const orderBy = document.getElementById('order-by');
+const trigger = document.getElementById('trigger');
 const photographerMediasSection = document.querySelector(".photograph-medias");
 const options = document.querySelectorAll('li');
 
+// Get photographer if from url
+const photographerId = new URLSearchParams(document.location.search).get("id");
+
+// Global variables
 let mediaDOMArray = [];
 let sortedMedias = [];
+let photographerDatas = {};
+let mediasDatas
 
 // Fetch photographers and medias datas from json file
 async function getPhotographer(i) {
@@ -73,18 +81,16 @@ async function displayPhotographerDatas() {
 
 // Enable trigger to open or close the menu
 function dropdownMenu(e) {
-    if ( e.type === 'click' || e.key === 'Enter' ) {
-        if (!orderBy.classList.contains('expanded')) {
-            openDropdownMenu()
-        } else {
-            closeDropdownMenu()
-        }
+    if ( (e.type === 'click' || e.key === 'Enter') && !orderContainer.classList.contains('expanded')) {
+        openDropdownMenu()
+    } else if ( (e.type === 'click' || e.key === 'Escape') && orderContainer.classList.contains('expanded')) {
+        closeDropdownMenu()
     }
 }
 
 // Open dropdown menu and enable filter by option
 function openDropdownMenu() {
-    orderBy.classList.add('expanded');
+    orderContainer.classList.add('expanded');
     trigger.setAttribute("aria-expanded", true);
     options.forEach(elt => {
         elt.addEventListener('click', displayOption);
@@ -92,22 +98,12 @@ function openDropdownMenu() {
         elt.setAttribute('aria-hidden', false);
         elt.setAttribute('tabindex', '0');
     })
-    document.addEventListener('keydown', arrowsNav);
-}
-
-function arrowsNav(e) {
-    if ( e.key === 'ArrowDown' && document.activeElement.nextElementSibling ) {
-        e.preventDefault()
-        document.activeElement.nextElementSibling.focus();
-    } else if (e.key === 'ArrowUp' && document.activeElement.previousElementSibling ) {
-        e.preventDefault()
-        document.activeElement.previousElementSibling.focus()
-    }
+    document.querySelector('[aria-selected="true"]').focus();
 }
 
 // Close dropdown menu
 function closeDropdownMenu() {
-    orderBy.classList.remove('expanded');
+    orderContainer.classList.remove('expanded');
     trigger.setAttribute("aria-expanded", false);
     options.forEach(elt => {
         elt.removeEventListener('click', displayOption);
@@ -116,26 +112,27 @@ function closeDropdownMenu() {
         }
         elt.removeAttribute('tabindex');
     })
-    document.removeEventListener('keydown', arrowsNav);
 }
 
 // Display the medias depending on the chosen option
 function displayOption(e) {
-    if ( e.type === 'click' || e.key === 'Enter') {
+    if ((e.type === 'click' || e.key === 'Enter') && e.currentTarget.tagName === 'LI') {
         options.forEach(option => {
             option.className = "";
             option.setAttribute("aria-selected", false);
             option.setAttribute('aria-hidden', true);
         })
-        e.currentTarget.className = "active";
-        e.currentTarget.setAttribute("aria-selected", true);
-        e.currentTarget.setAttribute('aria-hidden', false);
+        let choseOption = e.currentTarget
+        choseOption.setAttribute("aria-selected", true);
+        choseOption.setAttribute('aria-hidden', false);
         orderBy.setAttribute("aria-activedescendant", e.currentTarget.id);
         const photographerFirstname = photographerDatas.name.split(" ")[0].replace("-", " ");
-        sortedMedias = sortMedias(e.currentTarget.id);
+        sortedMedias = sortMedias(choseOption.id);
         displayMedias(sortedMedias, photographerFirstname);
         closeDropdownMenu();
-        trigger.focus();
+        orderBy.prepend(choseOption);
+    } else if (e.key === 'Escape') {
+        closeDropdownMenu()
     }
 }
 
@@ -153,4 +150,3 @@ async function init() {
 }
 
 init();
-

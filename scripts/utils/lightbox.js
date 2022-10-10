@@ -8,6 +8,7 @@ const lightboxCloseBtn = document.getElementById("lightbox-close");
 let lightboxImage;
 let index;
 
+// Enable the pictures and button to open and close the lightbox
 function manageLightbox() {
     for (let article of mediaDOMArray) {
         let media = article.querySelector('img, video');
@@ -20,7 +21,6 @@ function manageLightbox() {
 
 // Display lightbox
 function displayLightbox(e) {
-    console.log(' Display Lightbox')
     if (e.type === 'click' || e.key === 'Enter') {
         document.addEventListener('keyup', keyboardNav); // Enable keyboard navigation
         nextMedia.addEventListener('click', goToNext);
@@ -29,7 +29,11 @@ function displayLightbox(e) {
         createMediaDOM(media);
         lightbox.style.display = "block";
         lightboxCloseBtn.focus();
-        lightboxImage.src = media.src;
+        if (e.currentTarget.tagName === 'IMG') {
+            lightboxImage.src = media.src;
+        } else if (e.currentTarget.tagName === 'VIDEO') {
+            lightboxImage.src = media.firstElementChild.src;
+        }
         index = mediaDOMArray.findIndex(elt => elt.querySelector('img, video').src === lightboxImage.src)
         lightbox.setAttribute('aria-hidden', false);
         mainHeader.setAttribute('aria-hidden', true);
@@ -51,9 +55,9 @@ function createMediaDOM(media) {
         newMediaNode = document.createElement('video');
         newMediaNode.setAttribute('controls', '');
         newMediaNode.setAttribute('id', 'lightbox-image');
-        newMediaNode.appendChild(source);
-        newMediaNode.setAttribute('aria-label', mediaTitle)
         lightboxImage = document.createElement('source');
+        newMediaNode.appendChild(lightboxImage);
+        newMediaNode.setAttribute('aria-label', mediaTitle)
     }
     let title = document.createElement('p');
     title.textContent = mediaTitle;
@@ -85,7 +89,11 @@ function goToNext() {
         }
         let media = mediaDOMArray[index].querySelector('img, video')
         createMediaDOM(media)
-        lightboxImage.setAttribute('src', media.src)
+        if (media.tagName === 'IMG') {
+            lightboxImage.src = media.src;
+        } else if (media.tagName === 'VIDEO') {
+            lightboxImage.src = media.firstElementChild.src;
+        }
     }
 }
 
@@ -100,13 +108,17 @@ function goToPrev() {
         }
         let media = mediaDOMArray[index].querySelector('img, video')
         createMediaDOM(media)
-        lightboxImage.setAttribute('src', media.src)
+        if (media.tagName === 'IMG') {
+            lightboxImage.src = media.src;
+        } else if (media.tagName === 'VIDEO') {
+            lightboxImage.src = media.firstElementChild.src;
+        }
     }
 }
 
 // Close lightbox modal
 function closeLightbox(e) {
-    if ( e.type === 'click' || e.key === 'Enter' || e.key === 'Escape' ) {
+    if ( e.type === 'click' || e.key === 'Escape' ) {
         let mediaTitle = document.getElementById('lightbox-title').innerText;
         let media
         if (lightboxImage.tagName === 'IMG') {
