@@ -217,13 +217,19 @@
 .modal {
     border-radius: 5px;
     background-color: #DB8876;
-    width: 50%;
+    width: 670px;
+    max-height: 90vh;
+    overflow: auto;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: space-between;
     padding: 15px 35px 35px 35px;
     margin: 5vh auto;
+}
+
+.modal *:focus-visible {
+    outline-color: white;
 }
 
 .modal header {
