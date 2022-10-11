@@ -69,17 +69,18 @@ function createMediaDOM(media) {
 
 // Link keys and actions for keyboard navigation
 function keyboardNav(e) {
-    if (e.key === 'ArrowRight' || (e.key === 'Enter' && document.activeElement === nextMedia)) {
-        goToNext();
-    } else if (e.key === 'ArrowLeft' || (e.key === 'Enter' && document.activeElement === prevMedia)) {
-        goToPrev();
+    if (e.key === 'ArrowRight') {
+        goToNext(e);
+    } else if (e.key === 'ArrowLeft') {
+        goToPrev(e);
     } else if (e.key === 'Escape') {
         closeLightbox(e);
     }
 }
 
 // Go to the next media
-function goToNext() {
+function goToNext(e) {
+    e.preventDefault();
     if (index !== undefined) {
         document.querySelector('#lightbox div').remove()
         if (index === mediaDOMArray.length - 1) {
@@ -98,7 +99,8 @@ function goToNext() {
 }
 
 // Go to the previous media
-function goToPrev() {
+function goToPrev(e) {
+    e.preventDefault();
     if (index !== undefined) {
         document.querySelector('#lightbox div').remove()
         if (index === 0) {
